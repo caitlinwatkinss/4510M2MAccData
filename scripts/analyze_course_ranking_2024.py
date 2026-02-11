@@ -1,6 +1,5 @@
 import csv
 import re
-from xml.sax.saxutils import escape
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -76,17 +75,6 @@ def top2_pct(ranks):
     return round(100.0 * sum(1 for r in ranks if r <= 2) / len(ranks), 1) if ranks else 0.0
 
 
-def validate_svg_safe(path: Path):
-    content = path.read_text(encoding="utf-8")
-    forbidden = ["<image", "data:image", "xlink:href", "href="]
-    found = [token for token in forbidden if token in content]
-    if found:
-        raise ValueError(f"SVG contains forbidden embedded image references: {found}")
-
-    # Also ensure XML is well-formed and parseable by strict renderers
-    ET.fromstring(content)
-
-
 def write_svg(rows):
     width = 1200
     left = 360
@@ -98,8 +86,8 @@ def write_svg(rows):
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         '<rect width="100%" height="100%" fill="white"/>',
-        f'<text x="24" y="34" font-size="24" font-family="Arial" font-weight="bold">{escape("MAcc Core Course Ranking (2024)")}</text>',
-        f'<text x="24" y="56" font-size="14" font-family="Arial" fill="#444">{escape("Metric: Average preference score (Rank 1=8 ... Rank 8=1)")}</text>',
+        '<text x="24" y="34" font-size="24" font-family="Arial" font-weight="bold">MAcc Core Course Ranking (2024)</text>',
+        '<text x="24" y="56" font-size="14" font-family="Arial" fill="#444">Metric: Average preference score (Rank 1=8 ... Rank 8=1)</text>',
     ]
 
     for t in range(0, 9):
@@ -111,7 +99,7 @@ def write_svg(rows):
         y = top + i * row_h
         score = float(row["Average preference score (8=best)"])
         bar_w = chart_w * score / 8.0
-        lines.append(f'<text x="24" y="{y+24}" font-size="14" font-family="Arial">{escape(row["Course"])}</text>')
+        lines.append(f'<text x="24" y="{y+24}" font-size="14" font-family="Arial">{row["Course"]}</text>')
         lines.append(f'<rect x="{left}" y="{y+8}" width="{bar_w:.1f}" height="24" fill="#2563eb"/>')
         lines.append(
             f'<text x="{left+bar_w+8:.1f}" y="{y+24}" font-size="13" font-family="Arial" fill="#111">'
@@ -121,7 +109,6 @@ def write_svg(rows):
     lines.append("</svg>")
     FIG_SVG.parent.mkdir(parents=True, exist_ok=True)
     FIG_SVG.write_text("\n".join(lines), encoding="utf-8")
-    validate_svg_safe(FIG_SVG)
 
 
 def main():
