@@ -1,0 +1,14 @@
+*.xlsx
+*.xls
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.pptx
+*.docx
+*.zip
+*.pyc
+__pycache__/
+outputs/figures/
+!outputs/figures/
+!outputs/figures/*.svg
