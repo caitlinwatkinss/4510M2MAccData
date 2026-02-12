@@ -1,8 +1,8 @@
 # Course ranking (2024)
 
-Chosen metric: **Q35 core-course rank order** (most direct preference field). Converted ranks to mean_rating using **1→8, 2→7, ..., 8→1**.
+Chosen metric: **Q35 core-course rank order** (most direct preference field). Converted ranks to preference score using **1→8, 2→7, ..., 8→1**.
 
-| rank | course_name | n | mean_rating | median_rank | pct_favorable_top2 |
+| Rank | Course | n | Average preference score (8=best) | Median rank (1=best) | % favorable (rank 1-2) |
 |---|---|---|---|---|---|
 | 1 | ACC 6400 Advanced Tax Business Entities | 55 | 6.6 | 2.0 | 67.3 |
 | 2 | ACC 6300 Advanced Data Analytics | 55 | 5.45 | 3.0 | 32.7 |
