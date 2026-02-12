@@ -1,4 +1,5 @@
 import csv
+import html
 import re
 import zipfile
 import xml.etree.ElementTree as ET
@@ -99,7 +100,8 @@ def write_svg(rows):
         y = top + i * row_h
         score = float(row["Average preference score (8=best)"])
         bar_w = chart_w * score / 8.0
-        lines.append(f'<text x="24" y="{y+24}" font-size="14" font-family="Arial">{row["Course"]}</text>')
+        course_label = html.escape(row["Course"])
+        lines.append(f'<text x="24" y="{y+24}" font-size="14" font-family="Arial">{course_label}</text>')
         lines.append(f'<rect x="{left}" y="{y+8}" width="{bar_w:.1f}" height="24" fill="#2563eb"/>')
         lines.append(
             f'<text x="{left+bar_w+8:.1f}" y="{y+24}" font-size="13" font-family="Arial" fill="#111">'
